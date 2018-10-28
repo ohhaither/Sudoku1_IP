@@ -4,15 +4,15 @@ public class Sudoku
 
     public static void main(String[] args)
     {
-	Verificação(123456789, 9);
-	Verificação(12345679, 9);
-	Verificação(1234567893, 9);
-	Verificação(234567892, 9);
-	Verificação(123456785, 9);
-	Verificação(123447789, 9);
+	Verificacao(123456789, 9);
+	Verificacao(12345679, 9);
+	Verificacao(1234567893, 9);
+	Verificacao(234567892, 9);
+	Verificacao(123456785, 9);
+	Verificacao(123447789, 9);
     }
 
-    public static int Verificação(int num, int d)
+    public static int Verificacao(int num, int d)
     {
 	// ------------------------------------------------------------
 	// Condição 1
