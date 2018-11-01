@@ -1,0 +1,78 @@
+/**
+ * 
+ * @author Tomas Marques fc52794
+ * @author Fabio Furtado fc53456
+ * @version 1.0
+ * @since 2018-11-1
+ */
+public class Sudoku1 {
+  /**recolha de dados
+   * @param num o numero que testamos
+   * @param d o numero de digitos
+   * @requires {@code 0 < n}
+   * @return o valor de acordo com as condicoes obedecidas
+   */
+  public static int verificar(int num, int d) {
+   // recolha de dados
+      // --------------------------------------------------------------------------------------------------------
+    int n = num, tamanhoNum = 0, maior = 0, menor = d, soma = 0, soma_ = 0, produto = 1, produto_ = 1, i = 1;
+    while (n > 0) {
+      int digito = n % 10; // último dígito de n
+      n /= 10; // n perde o seu último dígito
+      tamanhoNum++; // tamanho de num
+      if (digito > maior) // Se o valor de digito for maior que o maior atual...
+        maior = digito; // ... o maior passa a ser o dígito atual
+      if (digito < menor) // Se o valor de digito for menor que o menor atual...
+        menor = digito; // ... o menor passa a ser o valor atual de digito
+      soma += i; // soma de 1 + 2 + 3 + ... + d
+      produto *= i; // produto de 1 x 2 3 x ... x d
+      soma_ += digito; // soma dos dígitos de n
+      produto_ *= digito; // produto dos dígitos de n
+      i++;
+    }
+    // --------------------------------------------------------------------------------------------------------
+    int retorno = 0;
+    // Condição 1
+    if (!(num > 0 && tamanhoNum == d)) // num é positivo e tem d dígitos?
+        retorno = 1;
+    // Condição 2
+    else if (!(menor == 1 && maior == d)) // o menor é 1 e o maior é d?
+      retorno = 2;
+    // Condição 3
+    else if (!(soma == soma_ && produto == produto_))
+      retorno = 3;
+    return retorno;
+  }    
+/** conversao dos valores de retorno para uma mensagem correspondente ao valor
+ * 
+ * @param retornoDeVerificacao parametro de verificacao das condicoes
+ * @param num numero que testamos
+ * @param d numero de digitos de num
+ */
+  public static void apresentarResultado(int retornoDeVerificacao, int num, int d) {
+    String mensagem;
+    switch(retornoDeVerificacao) {
+      case 1:
+        mensagem = String.format("valor negado...\n%d não é positivo ou não tem %d dígitos", num, d);
+        break;
+      case 2:
+        mensagem = String.format("valor negado...\no menor dígito de %d não é 1 ou o maior não é %d", num, d);
+        break;
+      case 3:
+        mensagem = String.format
+        ("valor negado...\na soma dos dígitos de %d não é igaul a 1+2+3+...+d ou o produto não é igual a 1x2x3x...xd", num);
+        break;
+      default:
+        mensagem = "valor aceite";
+    }
+    System.out.println(retornoDeVerificacao); // Temporária: para deteção de erros
+    System.out.println(mensagem);
+  }
+/**Inserir o numero a testar
+ * 
+ */
+  public static void main(String[] arg) {
+    int num = 1352476, d = 7;
+    apresentarResultado(verificar(num, d), num, d);
+  }
+}
