@@ -1,34 +1,61 @@
 /**
- * 
  * @author Tomas Marques fc52794
  * @author Fabio Furtado fc53456
- * @version 1.0
- * @since 2018-11-1
  */
 public class Sudoku1 {
-  /**recolha de dados
-   * @param num o numero que testamos
+
+  /**
+   * multiplica a sequência de números inteiros pertencentes ao intervalo indicado, incluindo os extremos
+   * 
+   * @param inicioIntervalo início do intervalo
+   * @param fimIntervalo fim do intervalo
+   * @return resultado da multiplicação
+   */
+  public static int produtoDoIntervalo(int inicioIntervalo, int fimItervalo) {
+    int multiplicacao = 1;
+    for (int i = inicioIntervalo; i <= fimItervalo; i++)
+      multiplicacao *= i; 
+    return multiplicacao;
+  }
+
+  /**
+   * soma a sequencia de números inteiros pertencentes ao intervalo indicado, incluindo os extremos
+   * 
+   * @param inicioIntervalo inicio do intervalo
+   * @param fimIntervalo fim do intervalo
+   * @return resultado da soma
+   */
+  public static int somaDoIntervalo(int inicioIntervalo, int fimIntervalo) {
+    int soma = 0;
+    for (int i = inicioIntervalo; i <= fimIntervalo; i++)
+      soma += i;
+    return soma;
+  }
+
+  /**
+   * Verifica a validade de uma série de condições relacionandas às variáveis {@code num} e {@code d} e
+   * retorna um valor inteiro de acordo o resultado obtido
+   * 
+   * @param num número a ser testado
    * @param d o numero de digitos
-   * @requires {@code 0 < n}
-   * @return o valor de acordo com as condicoes obedecidas
+   * @requires {@code d>0 && d<10}
+   * @ensures {@code retorno >= 0 && retorno <= 3}
+   * @return inteiro entre 0 e 3 inclusive
    */
   public static int verificar(int num, int d) {
-   // recolha de dados
-      // --------------------------------------------------------------------------------------------------------
-    int n = num, tamanhoNum = 0, maior = 0, menor = d, soma = 0, soma_ = 0, produto = 1, produto_ = 1, i = 1;
+    // recolha de dados
+    // --------------------------------------------------------------------------------------------------------
+    int n = num, tamanhoNum = 0, maior = 0, menor = d, soma = 0, produto = 1;
     while (n > 0) {
       int digito = n % 10; // último dígito de n
       n /= 10; // n perde o seu último dígito
       tamanhoNum++; // tamanho de num
       if (digito > maior) // Se o valor de digito for maior que o maior atual...
-        maior = digito; // ... o maior passa a ser o dígito atual
+        maior = digito; // ... o maior passa a ser o valor atual de digito
       if (digito < menor) // Se o valor de digito for menor que o menor atual...
         menor = digito; // ... o menor passa a ser o valor atual de digito
-      soma += i; // soma de 1 + 2 + 3 + ... + d
-      produto *= i; // produto de 1 x 2 3 x ... x d
-      soma_ += digito; // soma dos dígitos de n
-      produto_ *= digito; // produto dos dígitos de n
-      i++;
+      soma += digito; // soma dos dígitos de n
+      produto *= digito; // produto dos dígitos de n
     }
     // --------------------------------------------------------------------------------------------------------
     int retorno = 0;
@@ -39,40 +66,42 @@ public class Sudoku1 {
     else if (!(menor == 1 && maior == d)) // o menor é 1 e o maior é d?
       retorno = 2;
     // Condição 3
-    else if (!(soma == soma_ && produto == produto_))
+    else if (!(somaDoIntervalo(1, d) == soma && produtoDoIntervalo(1, d) == produto))
       retorno = 3;
     return retorno;
-  }    
-/** conversao dos valores de retorno para uma mensagem correspondente ao valor
- * 
- * @param retornoDeVerificacao parametro de verificacao das condicoes
- * @param num numero que testamos
+  }
+
+/** 
+ * Interpreta o valor de {@code retornoDeVerificacao} e escreve o resultado obtido na consola
+ * @param retornoDeVerificacao parametro de verificação das condicoes
+ * @param num numero testado
  * @param d numero de digitos de num
+ * @requires {@code retornoDeVerificacao >= 0 && retornoDeVerificacao <= 3}
  */
   public static void apresentarResultado(int retornoDeVerificacao, int num, int d) {
     String mensagem;
-    switch(retornoDeVerificacao) {
+    switch (retornoDeVerificacao) {
       case 1:
-        mensagem = String.format("valor negado...\n%d não é positivo ou não tem %d dígitos", num, d);
+        mensagem = String.format("O número %d não verifica a condição 'positivo e tem %d dígios'.", num, d);
         break;
       case 2:
-        mensagem = String.format("valor negado...\no menor dígito de %d não é 1 ou o maior não é %d", num, d);
+        mensagem = String.format("O número %d não verifica a condição 'maior dígito %d e menor 1'.", num, d);
         break;
       case 3:
-        mensagem = String.format
-        ("valor negado...\na soma dos dígitos de %d não é igaul a 1+2+3+...+d ou o produto não é igual a 1x2x3x...xd", num);
+        mensagem = String.format("O número %d não verifica a condição 'soma dígitos %d e produto dígitos %d'.", num, somaDoIntervalo(1, d), produtoDoIntervalo(1, d));
         break;
       default:
-        mensagem = "valor aceite";
+        mensagem = String.format("O número %d passou todas as condições verificadas", num);
     }
-    System.out.println(retornoDeVerificacao); // Temporária: para deteção de erros
     System.out.println(mensagem);
   }
-/**Inserir o numero a testar
- * 
- */
+
   public static void main(String[] arg) {
-    int num = 1352476, d = 7;
-    apresentarResultado(verificar(num, d), num, d);
+    apresentarResultado(verificar(123456789, 9), 123456789, 9);
+    apresentarResultado(verificar(12345679, 9), 12345679, 9);
+    apresentarResultado(verificar(1234567893, 9), 1234567893, 9);
+    apresentarResultado(verificar(234567892, 9), 234567892, 9);
+    apresentarResultado(verificar(123456785, 9), 123456785, 9);
+    apresentarResultado(verificar(123447789, 9), 123447789, 9);
   }
 }
